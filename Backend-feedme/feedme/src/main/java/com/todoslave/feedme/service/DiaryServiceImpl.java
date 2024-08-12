@@ -30,7 +30,7 @@ public class DiaryServiceImpl implements DiaryService {
         DiaryResponseDTO dto = new DiaryResponseDTO();
         dto.setContent(diary.getContent());
         dto.setCreatedAt(diary.getCreatedAt());
-        dto.setDiaryImg("http://localhost:8080/image/pictureDiary/"+ SecurityUtil.getCurrentUserId() +"_"+diary.getCreatedAt());
+        dto.setDiaryImg("https://i11b104.p.ssafy.io/image/pictureDiary/"+ SecurityUtil.getCurrentUserId() +"_"+diary.getCreatedAt());
         return dto;
     }
 }

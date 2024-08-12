@@ -135,7 +135,7 @@ public class FeedServiceImpl implements FeedService{
         feedDTO.setEmail(feed.getMember().getEmail());
         feedDTO.setFeedId(feed.getId());
         feedDTO.setNickname(feed.getNickname());
-        feedDTO.setImg("http://localhost:8080/image/pictureDiary/"+SecurityUtil.getCurrentUserId()+"_"+feed.getDiaryDay()); // 이미지 처리 로직 필요
+        feedDTO.setImg("https://i11b104.p.ssafy.io/image/pictureDiary/"+SecurityUtil.getCurrentUserId()+"_"+feed.getDiaryDay()); // 이미지 처리 로직 필요
         feedDTO.setCaption(feed.getContent());
         feedDTO.setLastCreateTime(feed.getUpdatedAt());
         feedDTO.setLikes(feed.getLikeCount());
@@ -160,7 +160,7 @@ public class FeedServiceImpl implements FeedService{
     public FeedResponseDTO convertToDTO(Feed feed) {
         FeedResponseDTO dto = new FeedResponseDTO();
         dto.setId(feed.getId());
-        dto.setImg("http://localhost:8080/image/pictureDiary/"+SecurityUtil.getCurrentUserId()+"_"+feed.getDiaryDay()); // 이미지 URL이 엔티티에 없다면 필요에 따라 설정
+        dto.setImg("https://i11b104.p.ssafy.io/image/pictureDiary/"+SecurityUtil.getCurrentUserId()+"_"+feed.getDiaryDay()); // 이미지 URL이 엔티티에 없다면 필요에 따라 설정
         dto.setContent(feed.getContent());
         dto.setAuthor(feed.getNickname());
         dto.setLikeCnt(String.valueOf(feed.getLikeCount()));

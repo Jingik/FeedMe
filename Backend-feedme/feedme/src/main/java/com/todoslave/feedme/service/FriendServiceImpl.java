@@ -46,6 +46,7 @@ public class FriendServiceImpl implements FriendService{
     @Autowired
     private com.todoslave.feedme.imageUtil imageUtil;
 
+
     // 친구 요청
     @Override
     public void requestFriend(FriendRequestDTO friendRequestDTO) {
@@ -122,7 +123,7 @@ public class FriendServiceImpl implements FriendService{
         Creature creature = member.getCreature();
         int creatureLevel = creature.getLevel();
         int creatureId = creature.getId();
-        return "http://localhost:8080/image/creature/" + creatureId + "_" +creatureLevel;
+        return "https://i11b104.p.ssafy.io/image/creature/" + creatureId + "_" +creatureLevel;
     }
 
     // 친구 요청 불러오기

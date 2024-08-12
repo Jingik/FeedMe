@@ -27,4 +27,4 @@ RUN ./gradlew clean build -x test
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app/build/libs/feedme-0.0.1-SNAPSHOT.jar"]
 
 # Expose port 8080
-EXPOSE 8080
+EXPOSE 8085

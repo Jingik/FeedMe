@@ -185,7 +185,7 @@ public class MemberServiceImpl implements MemberService {
         Creature creature = member.getCreature();
         int creatureLevel = creature.getLevel();
         int creatureId = creature.getId();
-        return "http://localhost:8080/image/creature/" + creatureId + "_" + creatureLevel;
+        return "https://i11b104.p.ssafy.io/image/creature/" + creatureId + "_" + creatureLevel;
     }
 }
 

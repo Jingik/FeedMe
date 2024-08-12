@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션관리 정책을 STATELESS(세션이 있으면 쓰지도 않고, 없으면 만들지도 않는다)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/token/**").permitAll()
+                        .requestMatchers("/token/**", "/bot/**").permitAll()
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
                         .requestMatchers("/login/oauth2/code/**", "/login/**", "/testsite", "/signup", "/user", "/v3/api-docs/**",
                                 "/swagger-ui/**", "/creature", "/swagger-ui.html", "/users/**").permitAll() // 유저 설정
