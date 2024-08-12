@@ -30,7 +30,7 @@ public class MemberChatRoom {
     private LocalDateTime receiveTime;
 
     public MemberChatRoom(){
-        receiveTime = LocalDateTime.MIN;
+        receiveTime = LocalDateTime.of(1970, 1, 1, 0, 0);
     }
 
 }
