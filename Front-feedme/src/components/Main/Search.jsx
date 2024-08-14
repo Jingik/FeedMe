@@ -30,7 +30,7 @@ const Search = () => {
 
   const fetchSearchResults = async (term) => {
     try {
-      const response = await fetch(`https://i11b104.p.ssafy.io/api/users/${term}`, {
+      const response = await fetch(`http://localhost:8080/users/${term}`, {
         method: 'GET',
         headers: {
           'Authorization': `${token}`,
@@ -78,7 +78,7 @@ const Search = () => {
 
   const handleFriendRequest = async (nickname) => {
     try {
-      const response = await fetch('https://i11b104.p.ssafy.io/api/friends', {
+      const response = await fetch('http://localhost:8080/friends', {
         method: 'POST',
         headers: {
           Authorization: token,

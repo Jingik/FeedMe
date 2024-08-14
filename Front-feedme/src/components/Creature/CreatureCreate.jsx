@@ -75,7 +75,7 @@ const CreatureCreate = () => {
 
     // 서버에 JSON 형식으로 데이터 보내기
     try {
-      const response = await axios.post('https://i11b104.p.ssafy.io/api/creature', {
+      const response = await axios.post('http://localhost:8080/creature', {
         creatureName,
         keyword,
         photo: photo.name  

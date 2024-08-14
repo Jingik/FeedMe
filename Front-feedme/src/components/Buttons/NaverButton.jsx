@@ -3,8 +3,8 @@ import { createButton } from "react-social-login-buttons";
 import naverLogo from "../../assets/images/naver-logo.png";
 
 const handleNaverLogin = () => {
-    // window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=QdiZgbrsCQdA7Zw1pJNN&redirect_uri=https://i11b104.p.ssafy.io/api/login/oauth2/code/naver&state=RANDOM_STATE';
-    window.location.href = 'https://i11b104.p.ssafy.io/api/oauth2/authorization/naver';
+    // window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=QdiZgbrsCQdA7Zw1pJNN&redirect_uri=http://localhost:8080/login/oauth2/code/naver&state=RANDOM_STATE';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
 };
 
 const config = {

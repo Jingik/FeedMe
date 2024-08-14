@@ -9,7 +9,7 @@ const ToDoList = ({onClick}) => {
   useEffect(() => { 
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://i11b104.p.ssafy.io/api/todos/main/daily', {
+        const response = await axios.get('http://localhost:8080/todos/main/daily', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': sessionStorage.getItem('accessToken'),

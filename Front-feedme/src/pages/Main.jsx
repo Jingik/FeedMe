@@ -72,7 +72,7 @@ const Main = () => {
 
     const postWeatherCategory = async (category) => {
       try {
-        const response = await axios.get(`https://i11b104.p.ssafy.io/api/creatureTodo/${category}`, {
+        const response = await axios.get(`http://localhost:8080/creatureTodo/${category}`, {
           headers: {
             Authorization:  storedToken || token,
           },

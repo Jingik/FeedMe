@@ -26,7 +26,7 @@ const NotificationModal = ({ onClose }) => {
 
   // useEffect(() => {
   
-  //   const eventSource = new EventSourcePolyfill('https://i11b104.p.ssafy.io/api/alarms/subscribe/alarm', {
+  //   const eventSource = new EventSourcePolyfill('http://localhost:8080/alarms/subscribe/alarm', {
   //     headers: {
   //       'Authorization': sessionStorage.getItem('accessToken')
   //     }
@@ -60,23 +60,23 @@ const NotificationModal = ({ onClose }) => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    const requestList = async () => {
-      try {
-        const res = await axios.get('https://i11b104.p.ssafy.io/api/friends/request', {
-          headers: {
-            'Authorization': sessionStorage.getItem('accessToken')
-          }
-        });
-        console.log('requests', res.data);
-        dispatch(setRequests(res.data));
-      } catch (err) {
-        console.log('Error : ', err);
-      }
-    };
+  const requestList = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/friends/request', {
+        headers: {
+          'Authorization': sessionStorage.getItem('accessToken')
+        }
+      });
+      console.log('requests : ', res.data);
+      dispatch(setRequests(res.data));
+    } catch (err) {
+      console.log('Error : ', err);
+    }
+  };
 
+  useEffect(() => {
     requestList();
-  }, [dispatch]);
+  }, []);
 
   const handleDelete = (index) => {
     const newNotifications = notifications.filter((_, i) => i !== index);
@@ -85,13 +85,15 @@ const NotificationModal = ({ onClose }) => {
 
   const handleReject = async (index, requestId) => {
     try {
-      await axios.post(`https://i11b104.p.ssafy.io/api/friends/reject/${requestId}`, {}, {
+      await axios.post(`http://localhost:8080/friends/reject/${requestId}`, {}, {
         headers: {
-          'Authorization': token,
+          'Authorization': sessionStorage.getItem('accessToken'),
           'Content-Type': 'application/json',
         }
       });
       dispatch(removeRequests(index));
+      console.log('요청 거절 완료!');
+      window.location.reload();
     } catch (error) {
       console.error('Error rejecting friend request:', error);
     }
@@ -99,13 +101,15 @@ const NotificationModal = ({ onClose }) => {
 
   const handleAccept = async (index, requestId) => {
     try {
-      await axios.post(`https://i11b104.p.ssafy.io/api/friends/accept/${requestId}`, {}, {
+      await axios.post(`http://localhost:8080/friends/accept/${requestId}`, {}, {
         headers: {
-          'Authorization': token,
+          'Authorization': sessionStorage.getItem('accessToken'),
           'Content-Type': 'application/json',
         }
       });
       dispatch(removeRequests(index));
+      console.log('요청 수락 완료!');
+      window.location.reload();
     } catch (error) {
       console.error('Error accepting friend request:', error);
     }
@@ -119,7 +123,7 @@ const NotificationModal = ({ onClose }) => {
       dispatch(setAlarmTime(time));
 
       try {
-        await axios.post('https://i11b104.p.ssafy.io/api/alarms/time', {
+        await axios.post('http://localhost:8080/alarms/time', {
           alarmTime: intAlarmTime
         },
           {
@@ -138,9 +142,6 @@ const NotificationModal = ({ onClose }) => {
     }
   };
 
-
-
-
   const toggleSettingsMode = () => {
     dispatch(setIsSettingsMode(!isSettingsMode));
   };
@@ -150,28 +151,28 @@ const NotificationModal = ({ onClose }) => {
   };
 
   const toggleRequestMode = () => {
-    const eventSource2 = new EventSourcePolyfill('https://i11b104.p.ssafy.io/api/alarms/subscribe/chat', {
-      headers: {
-        'Authorization': sessionStorage.getItem('accessToken')
-      }
-    });
+    // const eventSource2 = new EventSourcePolyfill('http://localhost:8080/alarms/subscribe/chat', {
+    //   headers: {
+    //     'Authorization': sessionStorage.getItem('accessToken')
+    //   }
+    // });
 
-    console.log('요청 완료!2');
+    // console.log('요청 완료!2');
 
-    eventSource2.addEventListener('friend', (event) => { // 서버에서 설정한 이름과 같아야 함.
-      // 서버에서 데이터가 전송될 때 호출되는 이벤트 핸들러
-      console.log(event.data);
-      console.log('Success!');
-      const newRequest = JSON.parse(event.data);
-      dispatch(addRequests(newRequest));
-    });
+    // eventSource2.addEventListener('friend', (event) => { // 서버에서 설정한 이름과 같아야 함.
+    //   // 서버에서 데이터가 전송될 때 호출되는 이벤트 핸들러
+    //   console.log(event.data);
+    //   console.log('Success!');
+    //   const newRequest = JSON.parse(event.data);
+    //   dispatch(addRequests(newRequest));
+    // });
 
     dispatch(setRequestMode(!isRequestMode));
 
-    // 컴포넌트가 언마운트되면 SSE 연결을 닫기
-    return () => {
-      eventSource2.close();
-    };
+    // // 컴포넌트가 언마운트되면 SSE 연결을 닫기
+    // return () => {
+    //   eventSource2.close();
+    // };
   }
 
   return (
@@ -223,7 +224,7 @@ const NotificationModal = ({ onClose }) => {
                 <ul>
                   {requests.map((request, index) => (
                     <li key={index}>
-                      <img src={request.img}
+                      <img src={request.creatureImg}
                         style={{
                           width: "35px",
                           marginRight: "20px",
@@ -239,7 +240,7 @@ const NotificationModal = ({ onClose }) => {
                             fontFamily: "PretendardSB",
                             color: "#696969"
                           }}
-                          className="NoticeButton" onClick={() => handleReject(index)}>거절</span>
+                          className="NoticeButton" onClick={() => handleReject(index, request.id)}>거절</span>
                         <span
                           style={{
                             width: "35px",
@@ -247,7 +248,7 @@ const NotificationModal = ({ onClose }) => {
                             fontFamily: "PretendardSB",
                             color: "#007bff"
                           }}
-                          className="NoticeButton" onClick={() => handleAccept(index)}>수락</span>
+                          className="NoticeButton" onClick={() => handleAccept(index, request.id)}>수락</span>
                       </div>
                     </li>
                   ))}

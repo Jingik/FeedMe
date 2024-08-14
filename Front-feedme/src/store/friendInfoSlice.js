@@ -9,7 +9,7 @@ export const fetchFriendInfo = createAsyncThunk(
 
       const response = await axios({
         method: 'get',
-        url: `https://i11b104.p.ssafy.io/api/friends/info`, 
+        url: `http://localhost:8080/friends/info`, 
         headers: {
           Authorization: `${token}`,
         },
@@ -33,7 +33,7 @@ export const deleteFriend = createAsyncThunk(
   'friendInfo/deleteFriend',
   async ({ token, counterpartNickname }, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`https://i11b104.p.ssafy.io/api/friends`, {
+      const response = await axios.delete(`http://localhost:8080/friends`, {
         headers: {
           Authorization: `${token}`,
         },

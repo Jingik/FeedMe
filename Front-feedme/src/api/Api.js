@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-	BASE_URL: 'https://i11b104.p.ssafy.io/api/',
+	BASE_URL: 'http://localhost:8080/',
     headers: {
       	'Content-Type': 'application/json',
     },
