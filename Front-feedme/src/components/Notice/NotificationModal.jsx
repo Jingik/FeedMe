@@ -26,7 +26,7 @@ const NotificationModal = ({ onClose }) => {
 
   // useEffect(() => {
   
-  //   const eventSource = new EventSourcePolyfill('http://localhost:8080/alarms/subscribe/alarm', {
+  //   const eventSource = new EventSourcePolyfill('https://i11b104.p.ssafy.io/api/alarms/subscribe/alarm', {
   //     headers: {
   //       'Authorization': sessionStorage.getItem('accessToken')
   //     }
@@ -62,7 +62,7 @@ const NotificationModal = ({ onClose }) => {
 
   const requestList = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/friends/request', {
+      const res = await axios.get('https://i11b104.p.ssafy.io/api/friends/request', {
         headers: {
           'Authorization': sessionStorage.getItem('accessToken')
         }
@@ -85,7 +85,7 @@ const NotificationModal = ({ onClose }) => {
 
   const handleReject = async (index, requestId) => {
     try {
-      await axios.post(`http://localhost:8080/friends/reject/${requestId}`, {}, {
+      await axios.post(`https://i11b104.p.ssafy.io/api/friends/reject/${requestId}`, {}, {
         headers: {
           'Authorization': sessionStorage.getItem('accessToken'),
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ const NotificationModal = ({ onClose }) => {
 
   const handleAccept = async (index, requestId) => {
     try {
-      await axios.post(`http://localhost:8080/friends/accept/${requestId}`, {}, {
+      await axios.post(`https://i11b104.p.ssafy.io/api/friends/accept/${requestId}`, {}, {
         headers: {
           'Authorization': sessionStorage.getItem('accessToken'),
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const NotificationModal = ({ onClose }) => {
       dispatch(setAlarmTime(time));
 
       try {
-        await axios.post('http://localhost:8080/alarms/time', {
+        await axios.post('https://i11b104.p.ssafy.io/api/alarms/time', {
           alarmTime: intAlarmTime
         },
           {
@@ -151,7 +151,7 @@ const NotificationModal = ({ onClose }) => {
   };
 
   const toggleRequestMode = () => {
-    // const eventSource2 = new EventSourcePolyfill('http://localhost:8080/alarms/subscribe/chat', {
+    // const eventSource2 = new EventSourcePolyfill('https://i11b104.p.ssafy.io/api/alarms/subscribe/chat', {
     //   headers: {
     //     'Authorization': sessionStorage.getItem('accessToken')
     //   }

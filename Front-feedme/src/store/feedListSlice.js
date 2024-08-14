@@ -5,7 +5,7 @@ export const fetchFeedList = createAsyncThunk(
   'feedList/fetchFeedList',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8080/feed/recent/friends', {
+      const response = await axios.get('https://i11b104.p.ssafy.io/api/feed/recent/friends', {
         headers: {
           Authorization: `${token}`,
         },
@@ -22,7 +22,7 @@ export const postComment = createAsyncThunk(
   'feedList/postComment',
   async ({ token, feedId, content }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`http://localhost:8080/feedComment/${feedId}`, 
+      const response = await axios.post(`https://i11b104.p.ssafy.io/api/feedComment/${feedId}`, 
       { content },
       {
         headers: {
@@ -41,7 +41,7 @@ export const deleteComment = createAsyncThunk(
   'feedList/deleteComment',
   async ({ token, feedComentId }, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8080/feedComment/${feedComentId}`, {
+      await axios.delete(`https://i11b104.p.ssafy.io/api/feedComment/${feedComentId}`, {
         headers: {
           Authorization: `${token}`,
         },
@@ -58,7 +58,7 @@ export const editComment = createAsyncThunk(
   'feedList/editComment',
   async ({ token, feedComentId, updatedComment }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`http://localhost:8080/feedComment/${feedComentId}`, 
+      const response = await axios.patch(`https://i11b104.p.ssafy.io/api/feedComment/${feedComentId}`, 
       updatedComment,
       {
         headers: {
@@ -77,7 +77,7 @@ export const deleteFeed = createAsyncThunk(
   'feedList/deleteFeed',
   async ({ token, feedId }, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8080/feed/${feedId}`, {
+      await axios.delete(`https://i11b104.p.ssafy.io/api/feed/${feedId}`, {
         headers: {
           Authorization: `${token}`,
         },
@@ -94,7 +94,7 @@ export const editFeed = createAsyncThunk(
   'feedList/editFeed',
   async ({ token, feedId, content }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`http://localhost:8080/feed/${feedId}`, 
+      const response = await axios.patch(`https://i11b104.p.ssafy.io/api/feed/${feedId}`, 
       { content },
       {
         headers: {
@@ -114,7 +114,7 @@ export const likePost = createAsyncThunk(
   async ({ token, feedId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/feed/${feedId}/like`,
+        `https://i11b104.p.ssafy.io/api/feed/${feedId}/like`,
         {},
         {
           headers: {

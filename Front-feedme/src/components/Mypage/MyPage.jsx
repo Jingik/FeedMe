@@ -123,7 +123,7 @@ const MyPage = () => {
   };
 
   const handleConfirmEdit = () => {
-    fetch(`http://localhost:8080/users`, { 
+    fetch(`https://i11b104.p.ssafy.io/api/users`, { 
       method: 'PATCH',
       headers: {
         'Authorization': `${token}`,
@@ -151,7 +151,7 @@ const MyPage = () => {
   };
 
   const handleConfirmRelease = () => {
-    fetch(`http://localhost:8080/creature`, {
+    fetch(`https://i11b104.p.ssafy.io/api/creature`, {
       method: 'DELETE',
       headers: {
         'Authorization': `${token}`, 

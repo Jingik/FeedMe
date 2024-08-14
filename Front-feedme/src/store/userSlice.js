@@ -5,7 +5,7 @@ export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8080/users/mypage', {
+      const response = await axios.get('https://i11b104.p.ssafy.io/api/users/mypage', {
         headers: {
           Authorization: `${token}`,
         },

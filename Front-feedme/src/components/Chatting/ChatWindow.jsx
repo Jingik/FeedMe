@@ -43,7 +43,7 @@ const ChatWindow = ({ roomId }) => {
       disconnect(); // 기존 연결이 있을 경우 해제
     }
 
-    const socket = new SockJS('http://localhost:8080/ws/friendChat');
+    const socket = new SockJS('https://i11b104.p.ssafy.io/api/ws/friendChat');
     const newClient = new Client({
         webSocketFactory: () => socket,
         debug: (str) => {

@@ -29,7 +29,7 @@ const Signup = () => {
     console.log(birthday);
 
     try {
-      const response = await axios.post('http://localhost:8080/users', {
+      const response = await axios.post('https://i11b104.p.ssafy.io/api/users', {
         nickname,
         email,
         birthday,

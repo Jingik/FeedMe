@@ -5,7 +5,7 @@ export const fetchFriendsList = createAsyncThunk(
   'friends/fetchFriendsList', 
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8080/friends/chats', {
+      const response = await axios.get('https://i11b104.p.ssafy.io/api/friends/chats', {
         headers: {
           Authorization: `${token}`,
         },

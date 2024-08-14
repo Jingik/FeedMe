@@ -19,7 +19,7 @@ function ReactCalendar() {
     const date = value.toISOString().split('T')[0];
     console.log('value : ', date);
 
-    axios.get(`http://localhost:8080/todos/calendar?date=${date}`,
+    axios.get(`https://i11b104.p.ssafy.io/api/todos/calendar?date=${date}`,
       {
         headers: { Authorization: sessionStorage.getItem('accessToken'), },
       }

@@ -4,7 +4,7 @@ import kakaoLogo from "../../assets/images/kakao-logo.png";
 
 const handleKakaoLogin = () => {
     // window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=e76f1a4a0c79727d85cd6b3b1969c892&redirect_uri=http://localhost:3000/login/oauth2/code/kakao';
-    window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+    window.location.href = 'https://i11b104.p.ssafy.io/api/oauth2/authorization/kakao';
 };
 
 const config = {

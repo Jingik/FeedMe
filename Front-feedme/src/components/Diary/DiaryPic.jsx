@@ -23,7 +23,7 @@ function DiaryPic() {
 
   const fetchDiaries = async (page, limit) => {
     try {
-      const response = await axios.post('http://localhost:8080/diary/list', {
+      const response = await axios.post('https://i11b104.p.ssafy.io/api/diary/list', {
         skip: page * limit,
         limit: limit,
       },
@@ -109,7 +109,7 @@ function DiaryPic() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/feed', {
+      const response = await axios.post('https://i11b104.p.ssafy.io/api/feed', {
         diaryDate: currentDate,
         content: feedContent,
       }, {
