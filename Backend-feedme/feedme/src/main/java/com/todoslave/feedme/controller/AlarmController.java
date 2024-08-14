@@ -6,6 +6,7 @@ import com.todoslave.feedme.login.util.SecurityUtil;
 import com.todoslave.feedme.DTO.PaginationRequestDTO;
 import com.todoslave.feedme.domain.entity.alarm.Alarm;
 import com.todoslave.feedme.service.AlarmService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -24,8 +25,15 @@ public class AlarmController {
     @Autowired
     private AlarmService alarmService;
 
+    @GetMapping(value = "/subscribe/friend", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter friendSubscribe(){
+        System.out.println("subscribe open!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return alarmService.friendCreateEmitter();
+    }
+
     @GetMapping(value = "/subscribe/alarm", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(){
+        System.out.println("subscribe open!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return alarmService.createEmitter();
     }
 
@@ -42,11 +50,8 @@ public class AlarmController {
 
     // 생일, 투두
     @GetMapping()
-    private ResponseEntity<Slice<AlarmResponseDTO>> loadAlarms(@RequestParam("skip") int skip, @RequestParam("limit") int limit) {
-        PaginationRequestDTO paginationRequestDTO = new PaginationRequestDTO();
-        paginationRequestDTO.setSkip(skip);
-        paginationRequestDTO.setLimit(limit);
-        return ResponseEntity.ok(alarmService.loadAlarms(paginationRequestDTO));
+    private ResponseEntity<List<AlarmResponseDTO>> loadAlarms() {
+        return ResponseEntity.ok(alarmService.loadAlarms());
     }
 
 

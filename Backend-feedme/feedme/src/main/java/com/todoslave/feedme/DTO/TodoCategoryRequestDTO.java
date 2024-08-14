@@ -1,6 +1,5 @@
 package com.todoslave.feedme.DTO;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

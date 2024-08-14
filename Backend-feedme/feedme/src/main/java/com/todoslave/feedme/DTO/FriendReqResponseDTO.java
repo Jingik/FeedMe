@@ -1,8 +1,11 @@
 package com.todoslave.feedme.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_NULL)
 public class FriendReqResponseDTO {
 
   // 친구 요청 ID

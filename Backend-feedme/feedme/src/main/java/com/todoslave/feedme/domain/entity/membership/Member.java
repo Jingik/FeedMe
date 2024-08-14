@@ -26,6 +26,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,8 +61,8 @@ public class Member { //유저 디테일은 사용자 인증 정보를 담아두
     private String nickname;
 
     //생일
-    @Column //(nullable = false)
-    private Timestamp birthday;
+    @Column (nullable = false)
+    private LocalDate birthday;
 
     // 상태
     @Column(name = "status", nullable = false)

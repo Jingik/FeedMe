@@ -20,7 +20,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CreatureController {
 
-    @Autowired
     private final CreatureService creatureService;
 
 
@@ -33,6 +32,20 @@ public class CreatureController {
 
         return ResponseEntity.ok(Map.of("creatureId", creature.getId(), "message", "크리쳐가 성공적으로 생성되었습니다."));
     }
+
+//    @Operation(summary = "크리쳐 생성") 이거는!!! 나중에 파일 전송시에!
+//    @PostMapping("/creature")
+//    public ResponseEntity<?> createCreature(@ModelAttribute CreatureMakeRequestDTO request,
+//                                            @RequestHeader("Authorization") final String accessToken) {
+//        Member member = SecurityUtil.getCurrentMember();
+//
+//        Creature creature = creatureService.createFristCreature(request.getKeyword(),
+//                request.getPhoto(),
+//                request.getCreatureName());
+//
+//        return ResponseEntity.ok(Map.of("creatureId", creature.getId(), "message", "크리쳐가 성공적으로 생성되었습니다."));
+//    }
+
 
     @Operation(summary = "크리쳐 보기")
     @GetMapping

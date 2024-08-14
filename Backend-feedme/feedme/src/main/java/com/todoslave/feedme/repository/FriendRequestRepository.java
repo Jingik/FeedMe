@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Integer> {
 
     FriendRequest findById(int id);
-    Slice<FriendRequest> findAllByMemberId(int memberId, Pageable pageable);
+    List<FriendRequest> findAllByMemberId(int memberId);
     Optional<FriendRequest> findByMember_IdAndCounterpartId_Id(int memberId, int counterpartId);
 }

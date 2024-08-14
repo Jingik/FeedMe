@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,7 +54,28 @@ public class AlarmServiceImpl implements AlarmService{
 
   private final Map<Integer, SseEmitter> emitters = new ConcurrentHashMap<>();
   private final Map<Integer, SseEmitter> chatEmitters = new ConcurrentHashMap<>();
+  private final Map<Integer, SseEmitter> friendEmitters = new ConcurrentHashMap<>();
 
+  @Override
+  public SseEmitter friendCreateEmitter() {
+
+    int memberId = SecurityUtil.getCurrentUserId();
+
+    SseEmitter emitter = new SseEmitter();
+    friendEmitters.put(memberId, emitter);
+
+    System.out.println("friend subscribe open!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+memberId);
+
+    if(friendEmitters.get(memberId)!=null){
+      System.out.println("friend subscribe has!!!");
+    }
+
+    emitter.onCompletion(() -> friendEmitters.remove(memberId));
+    emitter.onTimeout(() -> friendEmitters.remove(memberId));
+    emitter.onError((e) -> friendEmitters.remove(memberId));
+
+    return emitter;
+  }
 
   @Override
   public void createAlarmtime(AlarmSetRequestDTO alarmSetRequestDTO) {
@@ -76,6 +98,8 @@ public class AlarmServiceImpl implements AlarmService{
 
     SseEmitter emitter = new SseEmitter();
     emitters.put(memberId, emitter);
+
+    System.out.println("구독 열려용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+memberId);
 
     emitter.onCompletion(() -> emitters.remove(memberId));
     emitter.onTimeout(() -> emitters.remove(memberId));
@@ -107,16 +131,15 @@ public class AlarmServiceImpl implements AlarmService{
       alarm.setContent("배고픈 " + creature.getCreatureName() + ".. 밥 줄 사람 없나요?");
       alarmRepository.save(alarm);
 
-      sendAlarm(alarm, 0);
+      sendAlarm(alarm, 0, emitters.get(memberId));
 
     }
   }
 
   //친구 요청 알림
-  public void requestFriendship(FriendReqResponseDTO friendReqResponseDTO) throws IOException {
+  public void requestFriendship(FriendReqResponseDTO friendReqResponseDTO, int memberId) throws IOException {
 
-    int memberId = SecurityUtil.getCurrentUserId();
-    sendAlarm(friendReqResponseDTO,1);
+    sendAlarm(friendReqResponseDTO,1, friendEmitters.get(memberId));
 
   }
 
@@ -135,7 +158,7 @@ public class AlarmServiceImpl implements AlarmService{
       alarm.setContent(member.getNickname()+"님! 생일 축하합니다!");
 
       alarmRepository.save(alarm);
-      sendAlarm(alarm, 0);
+      sendAlarm(alarm, 0, emitters.get(member.getId()));
 
     }
 
@@ -159,11 +182,14 @@ public class AlarmServiceImpl implements AlarmService{
   // 채팅방 갱신
   @Override
   @Transactional
-  public void renewChattingRoom(MemberChatListResponseDTO room, int memberId) throws IOException {
+  public void renewChattingRoom(MemberChatListResponseDTO room, int memberId, int checked) throws IOException {
 
     SseEmitter emitter = chatEmitters.get(memberId);
 
     if(emitter!=null) {
+
+      room.setIsChecked(checked);
+
       SseEmitter.SseEventBuilder event = SseEmitter.event()
           .name("chattingRoom")
           .data(room);
@@ -177,10 +203,9 @@ public class AlarmServiceImpl implements AlarmService{
 
   // 알람 받아라
   @Override
-  public <T> void sendAlarm(T alarm, int type) throws IOException {
+  public <T> void sendAlarm(T alarm, int type, SseEmitter emitter) throws IOException {
 
-    int memberId = SecurityUtil.getCurrentUserId();
-    SseEmitter emitter = emitters.get(memberId);
+    System.out.println("alarm send!!!!!!!!!!"+alarm);
 
     if(emitter!=null){
 
@@ -201,6 +226,7 @@ public class AlarmServiceImpl implements AlarmService{
           throw new RuntimeException("알람전송중 문제 발생",e);
         }
       }else if(type==1){
+
         SseEmitter.SseEventBuilder event = SseEmitter.event()
             .name("friend")
             .data(alarm);
@@ -222,15 +248,22 @@ public class AlarmServiceImpl implements AlarmService{
 
   }
 
-  public Slice<AlarmResponseDTO> loadAlarms(PaginationRequestDTO paginationRequestDTO){
-    Pageable pageable = PageRequest.of(paginationRequestDTO.getSkip() / paginationRequestDTO.getLimit(),
-        paginationRequestDTO.getLimit());
+  public List<AlarmResponseDTO> loadAlarms(){
 
     int memberId = SecurityUtil.getCurrentUserId();
 
-    Slice<Alarm> alarm = alarmRepository.findByMemberId(memberId, pageable);
+    List<Alarm> alarm = alarmRepository.findByMemberId(memberId);
+    List<AlarmResponseDTO> response = new ArrayList<>();
 
-    return alarm.map(AlarmMapper::toDto);
+    for(Alarm a : alarm){
+
+      AlarmResponseDTO alarmResponseDTO = new AlarmResponseDTO();
+      alarmResponseDTO.setContent(a.getContent());
+      response.add(alarmResponseDTO);
+
+    }
+
+    return response;
   }
 
 

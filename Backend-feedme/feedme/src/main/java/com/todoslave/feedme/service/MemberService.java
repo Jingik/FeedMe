@@ -22,13 +22,6 @@ import java.util.Optional;
 
 public interface MemberService {
 
-
-    // 회원 가입
-    Member insertMember(Member member);
-  
-    // 회원 전체 조회
-    List<Member> findMembers();
-
     // 아이디로 회원 찾기
     Member findById(int userId);
 
@@ -37,9 +30,6 @@ public interface MemberService {
 
     // 닉네임으로 회원 찾기
     Member findByNickname(String nickname);
-
-    // 이메일 인증 여부 확인
-    boolean authenticate(String email);
 
     // 회원 가입 처리
     Member registerMember(MemberSignupRequestDTO memberSignupRequestDTO);

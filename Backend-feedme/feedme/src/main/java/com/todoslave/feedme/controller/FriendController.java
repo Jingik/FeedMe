@@ -12,6 +12,7 @@ import com.todoslave.feedme.service.FriendService;
 import com.todoslave.feedme.service.MemberChatService;
 import com.todoslave.feedme.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -36,7 +37,8 @@ public class FriendController {
 
     // 친구 요청하기
     @PostMapping
-    public ResponseEntity<Void> addFriend(@RequestBody FriendRequestDTO friendReqRequestDTO){
+    public ResponseEntity<Void> addFriend(@RequestBody FriendRequestDTO friendReqRequestDTO) throws IOException {
+
         friendService.requestFriend(friendReqRequestDTO);
         return ResponseEntity.noContent().build();
     }
@@ -67,12 +69,8 @@ public class FriendController {
 
     // 친구 요청 목록 조회
     @GetMapping("/request")
-    public ResponseEntity<Slice<FriendReqResponseDTO>> findRequestFriend(
-            @RequestParam("skip") int skip, @RequestParam("limit") int limit) {
-        PaginationRequestDTO paginationRequestDTO = new PaginationRequestDTO();
-        paginationRequestDTO.setSkip(skip);
-        paginationRequestDTO.setLimit(limit);
-        return ResponseEntity.ok(friendService.getRequestFriend(paginationRequestDTO));
+    public ResponseEntity<List<FriendReqResponseDTO>> findRequestFriend() {
+        return ResponseEntity.ok(friendService.getRequestFriend());
     }
 
     // 친구 요청 수락하기

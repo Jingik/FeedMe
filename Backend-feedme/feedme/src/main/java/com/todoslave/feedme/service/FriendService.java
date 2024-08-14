@@ -7,13 +7,15 @@ import com.todoslave.feedme.DTO.FriendResponseDTO;
 import com.todoslave.feedme.DTO.MemberChatListResponseDTO;
 import com.todoslave.feedme.DTO.PaginationRequestDTO;
 
+import com.todoslave.feedme.domain.entity.communication.FriendRequest;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.data.domain.Slice;
 
 public interface FriendService {
 
     // 친구 추가
-    void requestFriend(FriendRequestDTO friendRequestDTO);
+    void requestFriend(FriendRequestDTO friendRequestDTO) throws IOException;
 
     // 친구 삭제
     void deleteFriend(FriendRequestDTO friendRequestDTO);
@@ -25,7 +27,7 @@ public interface FriendService {
     List<FriendResponseDTO> getFriends();
 
     // 친구 요청 목록 조회
-    Slice<FriendReqResponseDTO> getRequestFriend(PaginationRequestDTO paginationRequestDTO);
+    List<FriendReqResponseDTO> getRequestFriend();
 
     // 친구 수락
     MemberChatListResponseDTO insertFriendship(int requestId);

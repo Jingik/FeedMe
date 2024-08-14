@@ -9,6 +9,8 @@ public class CreatureMakeRequestDTO {
 
     String keyword;
 
-//    MultipartFile photo;
+    // AI 구현시 이걸로 바꿔야함
+    // MultipartFile photo;
     String photo;
+
 }

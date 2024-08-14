@@ -12,5 +12,5 @@ public class CreatureTodoResponseDTO {
     private String content;
     private LocalDate createdAt;
     private int isCompleted;
-    private boolean diaryIsCompleted;
+//    private boolean diaryIsCompleted;
 }

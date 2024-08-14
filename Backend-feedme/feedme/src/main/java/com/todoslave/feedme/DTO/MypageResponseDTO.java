@@ -5,6 +5,8 @@ import lombok.Data;
 import java.time.LocalDate;
 @Data
 public class MypageResponseDTO {
+
+    private int sendId;
     private String nickname;
     private String email;
     private LocalDate brithday;

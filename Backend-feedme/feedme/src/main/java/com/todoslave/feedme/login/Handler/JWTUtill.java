@@ -75,7 +75,9 @@ public class JWTUtill {
 
 
     public String generateAccessToken(String email, String role) {
-        long tokenPeriod = 1000L * 60L * 30L * 4; // 2시간
+
+        long tokenPeriod = 1000L * 60L * 30L * 8; // 4시간
+
 //        long tokenPeriod = 1000L * 30L;
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);

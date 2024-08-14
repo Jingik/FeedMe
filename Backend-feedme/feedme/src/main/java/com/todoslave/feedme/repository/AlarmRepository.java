@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
 
-  Slice<Alarm> findByMemberId(int memberId, Pageable pageable);
+  List<Alarm> findByMemberId(int memberId);
 
 }
 

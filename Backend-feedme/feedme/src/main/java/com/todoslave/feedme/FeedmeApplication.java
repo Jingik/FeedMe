@@ -23,7 +23,7 @@ public class FeedmeApplication {
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 		System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
-
+		System.setProperty("GPT_SECRET_KEY", dotenv.get("GPT_SECRET_KEY"));
 		// Run the Spring Boot application
 		SpringApplication.run(FeedmeApplication.class, args);
 	}

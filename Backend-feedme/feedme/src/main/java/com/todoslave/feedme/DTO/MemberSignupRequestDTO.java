@@ -3,16 +3,18 @@ package com.todoslave.feedme.DTO;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class MemberSignupRequestDTO {
 
-    String email;
+    private String email;
 
-    String nickname;
+    private String nickname;
 
-    String userRole = "ROLE_USER";
+    private String userRole = "ROLE_USER";
 
-    Timestamp birthday;
-
+//    Timestamp birthday;
+    private LocalDate birthday;
 }
