@@ -2,6 +2,7 @@ package com.todoslave.feedme.service;
 
 import com.todoslave.feedme.DTO.CreatureChatResponseDTO;
 import com.todoslave.feedme.DTO.MemberChatResponseDTO;
+import com.todoslave.feedme.DTO.RagResponseDTO;
 import com.todoslave.feedme.domain.entity.membership.Member;
 import com.todoslave.feedme.domain.entity.task.CreatureTodo;
 import com.todoslave.feedme.domain.entity.task.Todo;
@@ -11,6 +12,11 @@ import com.todoslave.feedme.repository.TodoRepository;
 import com.todoslave.feedme.service.CreatureChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,9 +31,10 @@ public class CreatureChatServiceImpl implements CreatureChatService {
 
     private final TodoRepository todoRepository;
     private final CreatureTodoReposito creatureTodoReposito;
+    private final RestTemplate restTemplate;  // RestTemplate 주입
 
     @Override
-    public MemberChatResponseDTO getCreatureChat() {
+    public RagResponseDTO getCreatureChat(String question) {
 
         Member member = SecurityUtil.getCurrentMember();
         int memberId = member.getId();
@@ -62,10 +69,25 @@ public class CreatureChatServiceImpl implements CreatureChatService {
                 .collect(Collectors.toList());
 
         // 최종 DTO 생성 및 반환
-        MemberChatResponseDTO responseDTO = new MemberChatResponseDTO();
-        responseDTO.setMemberId(memberId);
-        responseDTO.setChatData(chatData);
+        MemberChatResponseDTO requestDTO = new MemberChatResponseDTO();
+        requestDTO.setMemberId(memberId);
+        requestDTO.setQuestion(question);
+        requestDTO.setChatData(chatData);
 
-        return responseDTO;
+//        System.out.println(requestDTO);
+//        return requestDTO;
+
+        // Flask API와 통신하기 위한 설정
+        String flaskUrl = "https://magnetic-ram-brave.ngrok-free.app/rag";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<MemberChatResponseDTO> entity = new HttpEntity<>(requestDTO, headers);
+
+        // Flask 서버로 POST 요청 보내기
+        ResponseEntity<RagResponseDTO> response = restTemplate.postForEntity(flaskUrl, entity, RagResponseDTO.class);
+
+        // Flask로부터 받은 응답 반환
+        return response.getBody();
     }
 }

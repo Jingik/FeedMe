@@ -46,6 +46,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**", "/creature", "/swagger-ui.html", "/users/**").permitAll() // 유저 설정
                         .requestMatchers("/ws/**","/alarms/**").permitAll()
                         .requestMatchers("/creature_data/**", "/creature_diary/**").permitAll()
+                        .requestMatchers("/api/chat/creature/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
