@@ -1,0 +1,94 @@
+import os
+from flask import Flask, request, jsonify, Response
+from io import BytesIO
+import requests
+import base64
+from PIL import Image
+from anything_control_pipeline import AnythingControlPipeline
+import time
+
+
+# Set CUDA environment variables
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Initialize the model pipeline
+model = AnythingControlPipeline()
+
+# Define the target IP for the Creature GPU model
+TARGET_IP = 'http://43.203.243.195:37777/api/creature/response'  # Replace with the actual IP and port
+
+@app.route('/creature', methods=['POST'])
+def handle_request():
+    try:
+        # Extract JSON data from the request
+        data = request.json
+        color = data['color']
+        attribute = data['attribute']
+        user_info = data['user_info']
+        
+        # Decode the base64 image data
+        image_data = base64.b64decode(data['image'])
+        image_io = BytesIO(image_data)
+        image = Image.open(image_io)
+        image.save("./input.png")
+        
+        # Process the image using the model pipeline
+        processed_images = model.pipe(color=color, spec=attribute, ip=image)
+        if not processed_images or len(processed_images) < 2:
+            raise ValueError("Model processing failed, insufficient images returned.")
+
+        time.sleep(2) 
+        # Encode both images to base64 and name them with the enumeration index
+        image_files = ['1.gif', '2.gif']
+        encoded_images = []
+
+        for idx, file_name in enumerate(image_files):
+            if not os.path.exists(file_name):
+                raise ValueError(f"File {file_name} does not exist.")
+
+            with open(file_name, "rb") as image_file:
+                image_data = image_file.read()
+                encoded_image = base64.b64encode(image_data).decode('utf-8')
+                encoded_images.append({
+                    'file_name': file_name,
+                    'encoded_image': encoded_image
+                })
+
+        # Prepare the JSON data to send to the target IP
+        payload = {
+            'color': color,
+            'attribute': attribute,
+            'user_info': user_info,
+            'images': encoded_images,
+            'format': 'gif'
+        }
+        
+        headers = {'Content-Type': 'application/json'}
+        
+        # Send the processed images and user info to the target IP as JSON
+        response_creature = requests.post(TARGET_IP, json=payload, headers=headers)
+
+        # Prepare the response with the GIF images encoded in JSON
+        response_data = {
+            'color': color,
+            'attribute': attribute,
+            'user_info': user_info,
+            'images': encoded_images,
+            'format': 'gif',
+            # 'response_creature': response_creature.json()
+        }
+
+        # Return the response with the GIF images encoded in JSON
+        return jsonify(response_data)
+    
+    except Exception as e:
+        # Log the exception details for debugging
+        print(f"Error in /creature endpoint: {e}")
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=33333)
